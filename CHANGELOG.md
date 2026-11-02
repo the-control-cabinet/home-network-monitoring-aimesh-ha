@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.1] - 2026-11-03
+- README expanded: status at a glance, why it matters for building controls, architecture, before/after, points with alarm bands, key decisions, results so far, how it was done, configuration files, lessons, skills, roadmap.
+
 ## [1.0.0] - 2026-11-02
 ### Added
 - Architecture and decision record (standalone APs to AiMesh with Ethernet backhaul; per-node channel planning not offered on these models; hybrid rejected).
