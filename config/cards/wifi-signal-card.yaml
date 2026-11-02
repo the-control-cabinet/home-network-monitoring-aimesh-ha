@@ -1,0 +1,16 @@
+type: markdown
+title: Wi-Fi signal – all devices
+content: |
+  {%- set devices = states.device_tracker
+       | selectattr('attributes.rssi', 'defined')
+       | rejectattr('attributes.rssi', 'none')
+       | sort(attribute='attributes.rssi') | list %}
+  **{{ devices | count }} Wi-Fi devices**, weakest first · 🟢 ≥ -60 · 🟡 -61 to -67 · 🟠 -68 to -75 · 🔴 below -75
+
+  | | Device | Band | Signal |
+  |:-:|:--|:-:|--:|
+  {% for s in devices -%}
+  {%- set r = s.attributes.rssi | int -%}
+  {%- set dot = '🔴' if r < -75 else ('🟠' if r < -67 else ('🟡' if r < -60 else '🟢')) -%}
+  | {{ dot }} | {{ s.name }} | {{ (s.attributes.connection_type | string) | replace('ConnectionType.WLAN_', '') | replace('G', ' GHz') }} | {{ r }} dBm |
+  {% endfor %}

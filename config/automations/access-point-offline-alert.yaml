@@ -1,0 +1,21 @@
+alias: Wi-Fi access point offline
+triggers:
+  - trigger: template
+    value_template: >
+      {{ integration_entities('asusrouter')
+         | select('is_device_attr', 'model', 'RP-AX58')
+         | reject('is_state', ['on', 'connected', 'Connected'])
+         | list | count > 0 }}
+    for:
+      minutes: 5
+actions:
+  - action: notify.notify
+    data:
+      title: "Wi-Fi access point offline"
+      message: >
+        {%- set down = integration_entities('asusrouter')
+             | select('is_device_attr', 'model', 'RP-AX58')
+             | reject('is_state', ['on', 'connected', 'Connected']) | list %}
+        {{ down | map('device_attr', 'name_by_user') | map('default', 'Unnamed node') | join(', ') }}
+        offline for 5 minutes.
+mode: single

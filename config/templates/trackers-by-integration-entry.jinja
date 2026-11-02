@@ -1,0 +1,13 @@
+{# Which integration entry (router, access point) created each tracker #}
+{%- set ns = namespace(hubs={}) %}
+{%- for s in states.device_tracker if s.attributes.connection_type is defined %}
+  {%- set hub = config_entry_attr(config_entry_id(s.entity_id), 'title') or 'unknown' %}
+  {%- set item = s.entity_id ~ ' (' ~ (s.attributes.connection_type | string | replace('ConnectionType.', '')) ~ ', rssi ' ~ (s.attributes.rssi | default('-')) ~ ')' %}
+  {%- set ns.hubs = dict(ns.hubs, **{hub: ns.hubs.get(hub, []) + [item]}) %}
+{%- endfor %}
+{%- for hub, items in ns.hubs.items() %}
+== {{ hub }}: {{ items | count }} trackers ==
+{%- for i in items %}
+  {{ i }}
+{%- endfor %}
+{%- endfor %}

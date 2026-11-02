@@ -1,0 +1,17 @@
+# Finds AiMesh nodes by model (change 'RP-AX58' to your node model)
+type: markdown
+title: Wi-Fi access points
+content: |
+  {%- set nodes = integration_entities('asusrouter')
+       | select('is_device_attr', 'model', 'RP-AX58') | list %}
+  {%- set online = ['on', 'connected'] %}
+  {%- set ns = namespace(up=0) %}
+  {%- for e in nodes if states(e) | lower in online %}{% set ns.up = ns.up + 1 %}{% endfor %}
+  **{{ ns.up }} of {{ nodes | count }} nodes online**
+
+  | | Access point | Area | Status | Since |
+  |:-:|:--|:--|:--|--:|
+  {% for e in nodes -%}
+  {%- set ok = states(e) | lower in online -%}
+  | {{ '🟢' if ok else '🔴' }} | {{ device_attr(e, 'name_by_user') or device_attr(e, 'name') }} | {{ area_name(e) or '–' }} | {{ 'Online' if ok else (states(e) | capitalize) }} | {{ relative_time(states[e].last_changed) }} ago |
+  {% endfor %}

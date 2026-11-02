@@ -1,0 +1,23 @@
+alias: Wi-Fi weak signal alert
+triggers:
+  - trigger: template
+    value_template: >
+      {{ states.device_tracker
+         | selectattr('attributes.rssi', 'defined')
+         | rejectattr('attributes.rssi', 'none')
+         | selectattr('attributes.rssi', 'lt', -75)
+         | list | count > 0 }}
+    for:
+      minutes: 30
+actions:
+  - action: notify.notify
+    data:
+      title: "Weak Wi-Fi signal"
+      message: >
+        {{ states.device_tracker
+           | selectattr('attributes.rssi', 'defined')
+           | rejectattr('attributes.rssi', 'none')
+           | selectattr('attributes.rssi', 'lt', -75)
+           | map(attribute='name') | join(', ') }}
+        below -75 dBm for 30 minutes.
+mode: single

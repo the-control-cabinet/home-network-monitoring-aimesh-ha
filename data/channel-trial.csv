@@ -1,0 +1,7 @@
+date,time,spot,access_point,band,channel,signal_pct,connected_stations,channel_utilization_pct,notes
+2026-11-02,,one spot (pre-change scan),router,2.4 GHz,1,61,1,31,Before all APs were nodes
+2026-11-02,,one spot (pre-change scan),AP (now node),2.4 GHz,1,79,2,30,
+2026-11-02,,one spot (pre-change scan),AP (standalone at the time),2.4 GHz,1,73,23,34,Busiest AP
+2026-11-02,,one spot (pre-change scan),AP (standalone at the time),2.4 GHz,6,35,16,9,
+2026-11-02,,one spot (pre-change scan),AP (standalone at the time),2.4 GHz,11,74,9,29,Neighbours also on 11
+2026-11-02,,one spot (pre-change scan),router,5 GHz,36,59,1,8,

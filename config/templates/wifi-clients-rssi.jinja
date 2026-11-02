@@ -1,0 +1,4 @@
+{# Developer Tools -> Template: every Wi-Fi client with its band and RSSI #}
+{%- for s in states.device_tracker if s.attributes.rssi is defined and s.attributes.rssi is not none %}
+{{ s.entity_id }} | {{ s.name }} | {{ s.attributes.connection_type | string | replace('ConnectionType.', '') }} | rssi {{ s.attributes.rssi }}
+{%- endfor %}
